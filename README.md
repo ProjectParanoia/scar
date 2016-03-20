@@ -1,3 +1,7 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/9wts7sjmgkw9pg62?svg=true)](https://ci.appveyor.com/project/BakaBBQ/scar)
+
+[![Build Status](https://travis-ci.org/ProjectParanoia/scar.svg?branch=master)](https://travis-ci.org/ProjectParanoia/scar)
+
 Scar
 ===========================
 > Scars are the only concrete evidence that you once suffered.
