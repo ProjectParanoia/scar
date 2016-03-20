@@ -99,6 +99,8 @@ script:
 before_deploy:
   - bash ci/before_deploy.sh
 
+sudo: required
+
 deploy:
   provider: releases
   # TODO Regenerate this api_key for your project, this one won't work for you. Here's how:
@@ -108,8 +110,8 @@ deploy:
   # step and `travis` is the official Travis CI gem (see https://rubygems.org/gems/travis/)
   # - Enter the "encrypted value" below
   api_key:
-    secure: epCwQDm3DP5+cJ3feE4GSGU1FGXscuXvpHIhmV+hKyHQaoK8Mff+SSpPMJZrNash0ZF7WmnUGsAXtRdv7pDcDUl24TYeB0+DfA2Brzig2MMn8sFcREEK5JpQawvBQx66xKzp1q85EMs6oQvoJWj8sQ52BAk+FDx//4uoF3o5+KAOhgl0YN7/qw+o8iiczIYinhZHFFwzQ7EIvpo2DCb10EU/HuRihjHyOrQBankVZERjy6RG1E1FpE2oO0CbJqu6E1ysu5FY/45S2WuonCKioUEVEJwgUN/QoHeyRayQHPpcY8j+uypj9NHK78MMKpZi8VMQNQhQDtMiSG+JmomquDV8cvXIlt3dJstCDMMfqjz7oZNscRDJXGQcOFxQsZMAGa577BLp4EzidFvypC4IIIPxLtmC8lut+m8MWj1TqToW+KNLcoN3+gm8A6PvurBvadGpnv4aSIYBP0SOzJn6Rhz/ANoUZ1OIrCSXkRjkSayY72OZwBALMGCLeihh4exDelVgtmUraKbuUcwYtqfUi++40QLGRnqoaRFzogOid/vuEdviiax3X9JYFdJJEVuwQrdTmpt0+cM+CFUlaAI4tVwkIkQd5jsRfilcE1AsFwA2A/cNOzGolOScwOK9r2p3CP04fHctbOLlqREV+wDmeSg2MtDirtW9KoReedk3Wug=
-  file: ${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz
+    secure: A3/Xde3gJoo5wwr/TQCP2ADRZ01I+VAsK1Q6vfMxFb2vJBQK/LN5H+tWMnBhBGZ1X+xjYWmkS+w0odDlTcCF9oHtG4iLlkj31J+cKdk+NEUI0a6w0uWhwxqIM0kwUqWwetfZkEypYkww8vc++y6wnuiz3pnnk0hjiKVrs3xE26xuScCWm2YtWTJb6Dk7+cFo1DCLu4CmQ7bcUokTqkIWHpMXHzKMLlTVNC91+SXoZ/BULZS3FtrtZ2uUM/RQuEQxjEeiPQ6un28FoVyI3eWUny3RXjwDAaS6N7ms2lii1wXQ8xAQXLgKheSNsPXlbJSK3uaPgS/D9BRdlwCWZ9bIkisYZvSqrnnigHIjmiAGBWqp3DIAXwyj9FwRAIqr/F6sITTD+8hWXPITOUcHD5tZGuUXNN34oY8GssU5vMLkKqYR6D3CwmqnTLwC8+CyxAcnz48SH/tBzje+oW2by7viW2z1/dzKYvPqqqogsxlIzy3OVQM4qV9d3gGYD+ZtReTWjWOy9YPG70vHWnLwD6+xQj0v32jnwTWmWDXSj/aXqvfH07GT5d3M6yXaCZFWrjvTyLKw5IQb1m09L/LA9cdVdgIo3PsaIvjVp2Te86WXTY5dGUNoTbZckq1biyDPrqFUwCC44zCaZ4V8psnP1f9ZKwnSQA9B87WliDZlOujmjRw=
+    file: ${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz
   # don't delete the artifacts from previous phases
   skip_cleanup: true
   # deploy when a new tag is pushed
