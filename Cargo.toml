@@ -1,0 +1,13 @@
+[package]
+name = "scar"
+version = "0.1.0"
+authors = ["BakaBBQ <liubaqiao@126.com>"]
+
+[[bin]]
+name = "scar"
+path = "src/main.rs"
+
+[dependencies]
+toml = "0.1"
+hlua = "0.1"
+piston_window = "0.32.0"

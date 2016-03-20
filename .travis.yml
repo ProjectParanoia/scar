@@ -1,0 +1,133 @@
+sudo: false
+
+language: generic
+
+env:
+  global:
+    # This will be part of the release tarball
+    - PROJECT_NAME=scar
+
+# AFAICT There are a few ways to set up the build jobs. This one is not the DRYest but I feel is the
+# easiest to reason about.
+# TODO Feel free to remove the channels/targets you don't need
+# NOTE Make *sure* you don't remove a reference (&foo) if you are going to dereference it (*foo)
+matrix:
+  include:
+    # Stable channel
+    - os: linux
+      env: TARGET=arm-unknown-linux-gnueabihf CHANNEL=stable
+      # Extra packages only for this job
+      addons:
+        apt:
+          packages: &arm_unknown_linux_gnueabihf
+            # Cross compiler and cross compiled C libraries
+            - gcc-arm-linux-gnueabihf
+            - libc6-armhf-cross
+            - libc6-dev-armhf-cross
+            # Emulator
+            - qemu-user
+    - os: osx
+      env: TARGET=i686-apple-darwin CHANNEL=stable
+    - os: linux
+      env: TARGET=i686-unknown-linux-gnu CHANNEL=stable
+      addons:
+        apt:
+          packages: &i686_unknown_linux_gnu
+            # Cross compiler and cross compiled C libraries
+            - gcc-multilib
+    - os: osx
+      env: TARGET=x86_64-apple-darwin CHANNEL=stable
+    - os: linux
+      env: TARGET=x86_64-unknown-linux-gnu CHANNEL=stable
+    - os: linux
+      env: TARGET=x86_64-unknown-linux-musl CHANNEL=stable
+    # Beta channel
+    - os: linux
+      env: TARGET=arm-unknown-linux-gnueabihf CHANNEL=beta
+      addons:
+        apt:
+          # Use the same packages the stable version uses
+          packages: *arm_unknown_linux_gnueabihf
+    - os: osx
+      env: TARGET=i686-apple-darwin CHANNEL=beta
+    - os: linux
+      env: TARGET=i686-unknown-linux-gnu CHANNEL=beta
+      addons:
+        apt:
+          packages: *i686_unknown_linux_gnu
+    - os: osx
+      env: TARGET=x86_64-apple-darwin CHANNEL=beta
+    - os: linux
+      env: TARGET=x86_64-unknown-linux-gnu CHANNEL=beta
+    - os: linux
+      env: TARGET=x86_64-unknown-linux-musl CHANNEL=beta
+    # Nightly channel
+    - os: linux
+      env: TARGET=arm-unknown-linux-gnueabihf CHANNEL=nightly
+      addons:
+        apt:
+          # Use the same packages the stable version uses
+          packages: *arm_unknown_linux_gnueabihf
+    - os: osx
+      env: TARGET=i686-apple-darwin CHANNEL=nightly
+    - os: linux
+      env: TARGET=i686-unknown-linux-gnu CHANNEL=nightly
+      addons:
+        apt:
+          packages: *i686_unknown_linux_gnu
+    - os: osx
+      env: TARGET=x86_64-apple-darwin CHANNEL=nightly
+    - os: linux
+      env: TARGET=x86_64-unknown-linux-gnu CHANNEL=nightly
+    - os: linux
+      env: TARGET=x86_64-unknown-linux-musl CHANNEL=nightly
+  allow_failures:
+    # NOTE rust-lang/rust#30966 Rust 1.7.0 for ARM doesn't work with glibc <2.17. Here we use Ubuntu
+    # 12.04 which ships with glibc-2.15 so this build job will always fail. This issue has been
+    # fixed in the nightlies and the fix will reach beta and stable by the next stable release.
+    # TODO Remove this entry by the time Rust 1.8.0 is out
+    - os: linux
+      env: TARGET=arm-unknown-linux-gnueabihf CHANNEL=stable
+
+install:
+  - export PATH="$PATH:~/multirust/bin"
+  - bash ci/install.sh
+
+script:
+  - bash ci/script.sh
+
+before_deploy:
+  - bash ci/before_deploy.sh
+
+deploy:
+  provider: releases
+  # TODO Regenerate this api_key for your project, this one won't work for you. Here's how:
+  # - Go to 'https://github.com/settings/tokens/new' and generate a Token with only the
+  # `public_repo` scope enabled
+  # - Call `travis encrypt $github_token` where $github_token is the token you got in the previous
+  # step and `travis` is the official Travis CI gem (see https://rubygems.org/gems/travis/)
+  # - Enter the "encrypted value" below
+  api_key:
+    secure: epCwQDm3DP5+cJ3feE4GSGU1FGXscuXvpHIhmV+hKyHQaoK8Mff+SSpPMJZrNash0ZF7WmnUGsAXtRdv7pDcDUl24TYeB0+DfA2Brzig2MMn8sFcREEK5JpQawvBQx66xKzp1q85EMs6oQvoJWj8sQ52BAk+FDx//4uoF3o5+KAOhgl0YN7/qw+o8iiczIYinhZHFFwzQ7EIvpo2DCb10EU/HuRihjHyOrQBankVZERjy6RG1E1FpE2oO0CbJqu6E1ysu5FY/45S2WuonCKioUEVEJwgUN/QoHeyRayQHPpcY8j+uypj9NHK78MMKpZi8VMQNQhQDtMiSG+JmomquDV8cvXIlt3dJstCDMMfqjz7oZNscRDJXGQcOFxQsZMAGa577BLp4EzidFvypC4IIIPxLtmC8lut+m8MWj1TqToW+KNLcoN3+gm8A6PvurBvadGpnv4aSIYBP0SOzJn6Rhz/ANoUZ1OIrCSXkRjkSayY72OZwBALMGCLeihh4exDelVgtmUraKbuUcwYtqfUi++40QLGRnqoaRFzogOid/vuEdviiax3X9JYFdJJEVuwQrdTmpt0+cM+CFUlaAI4tVwkIkQd5jsRfilcE1AsFwA2A/cNOzGolOScwOK9r2p3CP04fHctbOLlqREV+wDmeSg2MtDirtW9KoReedk3Wug=
+  file: ${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz
+  # don't delete the artifacts from previous phases
+  skip_cleanup: true
+  # deploy when a new tag is pushed
+  on:
+    # channel to use to produce the release artifacts
+    # NOTE make sure you only release *once* per target
+    # TODO you may want to pick a different channel
+    condition: $CHANNEL = stable
+    tags: true
+
+branches:
+  only:
+    # Pushes and PR to the master branch
+    - master
+    # IMPORTANT Ruby regex to match tags. Required, or travis won't trigger deploys when a new tag
+    # is pushed. This regex matches semantic versions like v1.2.3-rc4+2016.02.22
+    - /^v\d+\.\d+\.\d+.*$/
+
+notifications:
+  email:
+    on_success: never
