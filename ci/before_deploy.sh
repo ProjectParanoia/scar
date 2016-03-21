@@ -17,8 +17,14 @@ mk_tarball() {
 
   pushd $temp_dir
 
+  echo $out_dir
+
+
   # release tarball will look like 'rust-everywhere-v1.2.3-x86_64-unknown-linux-gnu.tar.gz'
   tar czf $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz *
+
+  ls $out_dir
+  ls $temp_dir
 
   popd $temp_dir
   rm -r $temp_dir
