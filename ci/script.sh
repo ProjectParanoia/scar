@@ -44,7 +44,7 @@ run_test_suite() {
       cargo build --target $TARGET
 
       # run the main executable using the emulator
-      qemu-arm -L /usr/arm-linux-gnueabihf target/$TARGET/debug/hello
+      qemu-arm -L /usr/arm-linux-gnueabihf target/$TARGET/debug/scar
       ;;
     *)
       cargo build --target $TARGET --verbose
@@ -54,7 +54,7 @@ run_test_suite() {
   esac
 
   # sanity check the file type
-  file target/$TARGET/debug/hello
+  file target/$TARGET/debug/scar
 }
 
 main() {
