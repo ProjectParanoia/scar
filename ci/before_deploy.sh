@@ -31,3 +31,5 @@ main() {
   mk_artifacts
   mk_tarball
 }
+
+main
