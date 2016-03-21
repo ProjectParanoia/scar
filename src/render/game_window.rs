@@ -8,8 +8,8 @@ pub struct GameWindow {
 };
 
 impl GameWindow {
-    fn new() -> GameWindow {
-
+    fn new(config: &Config) -> GameWindow {
+        let window: PistionWindow = WindowSettings::new("")
     }
 }
 

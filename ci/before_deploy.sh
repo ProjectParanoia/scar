@@ -21,9 +21,7 @@ mk_tarball() {
 
 
   # release tarball will look like 'rust-everywhere-v1.2.3-x86_64-unknown-linux-gnu.tar.gz'
-  tar czf ~/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz *
-
-  echo "Tarball generated in $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz"
+  tar czf $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz *
 
   popd $temp_dir
   rm -r $temp_dir
