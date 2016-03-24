@@ -1,9 +1,12 @@
 extern crate toml;
 extern crate hlua;
-pub mod config;
-pub mod lua_core;
+extern crate cgmath;
+pub mod game;
+use game::player::Player;
+use game::entity::Entity;
 
 fn main() {
-    let c = config::read_from_default();
-    println!("title: {}", c.title)
+    // let c = config::read_from_default();
+    let p = Player::new();
+    p.update(vec![]);
 }

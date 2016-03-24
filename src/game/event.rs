@@ -1,4 +1,6 @@
-use piston::input::keyboard::Key;
-enum Event {
-    Keypress(Key)
+
+use game::keys::Keys;
+
+pub enum Events {
+    Keypress (Keys)
 }

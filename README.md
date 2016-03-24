@@ -1,10 +1,9 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/9wts7sjmgkw9pg62?svg=true)](https://ci.appveyor.com/project/BakaBBQ/scar)
-
-[![Build Status](https://travis-ci.org/ProjectParanoia/scar.svg?branch=master)](https://travis-ci.org/ProjectParanoia/scar)
-
 Scar
 ===========================
-> Scars are the only concrete evidence that you once suffered.
+>  a mark left on a stem or branch by a fallen leaf or harvested fruit
+
+[![Build status](https://ci.appveyor.com/api/projects/status/9wts7sjmgkw9pg62?svg=true)](https://ci.appveyor.com/project/BakaBBQ/scar)
+[![Build Status](https://travis-ci.org/ProjectParanoia/scar.svg?branch=master)](https://travis-ci.org/ProjectParanoia/scar)
 
 Every year around this time I try out a new programming language and start out yet another bullet-hell game / engine.
 
